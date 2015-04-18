@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width"/>
+<title>00Q And The Horrible Tiger Gun</title>
+<style>
+
+html,
+body
+{
+	margin: 0; padding: 0;
+	background: black;
+	overflow: hidden;
+}
+
+canvas
+{
+	position: fixed;
+	left: 0; top: 0;
+}
+
+</style>
+</head>
+<body>
+<canvas id="Game">Sorry, your browser cannot render this content.</canvas>
+<script>
+
+"use strict";
+
+var canvas,
+	ctx,
+	width,
+	height,
+	now,
+	factor,
+	last;
+
+function draw()
+{
+	ctx.clearRect( 0, 0, width, height );
+
+	ctx.fillStyle = "#f00";
+	ctx.fillRect( 0, 0, width/1000*(now % 1000), height );
+}
+
+function run()
+{
+	requestAnimationFrame( run );
+
+	now = Date.now();
+	factor = (now-last)/16;
+	last = now;
+
+	draw();
+}
+
+function resize()
+{
+	canvas.width = width = window.innerWidth;
+	canvas.height = height = window.innerHeight;
+	canvas.style.width = width+"px";
+	canvas.style.height = height+"px";
+}
+
+function load()
+{
+	if( !(canvas = document.getElementById( "Game" )) ||
+		!(ctx = canvas.getContext( "2d" )) )
+		return;
+
+	resize()
+	window.onresize = resize;
+
+	last = Date.now()-16;
+	run();
+}
+
+window.onload = load;
+
+</script>
+</body>
+</html>
