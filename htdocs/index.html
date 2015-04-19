@@ -1,7 +1,9 @@
 <!doctype html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width"/>
+<meta charset="utf-8"/>
+<meta name="msapplication-tap-highlight" content="no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 <title>00Q And The Horrible Tiger Gun</title>
 <style>
 
@@ -9,8 +11,9 @@ html,
 body
 {
 	margin: 0; padding: 0;
-	background: black;
+	background: #f2f2f2;
 	overflow: hidden;
+	-ms-touch-action: none;
 }
 
 canvas
@@ -27,20 +30,473 @@ canvas
 
 "use strict";
 
-var canvas,
+var requestAnimFrame =
+		window.requestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+		function( callback )
+		{
+			window.setTimeout( callback, 16 );
+		},
+	resources = {
+		doqDead: { rect: {/*00q-dead*/x:241,y:79,w:130,h:51} },
+		doqHit0: { rect: {/*00q-hit0*/x:262,y:557,w:59,h:152} },
+		doqHit1: { rect: {/*00q-hit1*/x:1122,y:321,w:62,h:124} },
+		doqNeutral: { rect: {/*00q-neutral*/x:200,y:557,w:60,h:153} },
+		doqRunRight0: { rect: {/*00q-run0*/x:711,y:321,w:98,h:145} },
+		doqRunRight1: { rect: {/*00q-run1*/x:499,y:321,w:104,h:145} },
+		doqRunRight2: { rect: {/*00q-run2*/x:1070,y:321,w:50,h:145} },
+		doqRunRight3: { rect: {/*00q-run3*/x:1,y:413,w:90,h:150} },
+		doqRunRight4: { rect: {/*00q-run4*/x:647,y:1,w:98,h:145} },
+		doqRunRight5: { rect: {/*00q-run5*/x:393,y:321,w:104,h:145} },
+		doqRunRight6: { rect: {/*00q-run6*/x:1018,y:321,w:50,h:145} },
+		doqRunRight7: { rect: {/*00q-run7*/x:284,y:396,w:90,h:150} },
+		doqRunLeft0: { rect: {/*00q-run0*/x:711,y:321,w:98,h:145},
+			mirror: true },
+		doqRunLeft1: { rect: {/*00q-run1*/x:499,y:321,w:104,h:145},
+			mirror: true },
+		doqRunLeft2: { rect: {/*00q-run2*/x:1070,y:321,w:50,h:145},
+			mirror: true },
+		doqRunLeft3: { rect: {/*00q-run3*/x:1,y:413,w:90,h:150},
+			mirror: true },
+		doqRunLeft4: { rect: {/*00q-run4*/x:647,y:1,w:98,h:145},
+			mirror: true },
+		doqRunLeft5: { rect: {/*00q-run5*/x:393,y:321,w:104,h:145},
+			mirror: true },
+		doqRunLeft6: { rect: {/*00q-run6*/x:1018,y:321,w:50,h:145},
+			mirror: true },
+		doqRunLeft7: { rect: {/*00q-run7*/x:284,y:396,w:90,h:150},
+			mirror: true },
+		doqStunned: { rect: {/*00q-stunned*/x:1032,y:468,w:51,h:149} },
+		doqTigergunFireRight0: {
+			rect: {/*00q-tigergun-fire0*/x:482,y:468,w:83,h:151} },
+		doqTigergunFireRight1: {
+			rect: {/*00q-tigergun-fire1*/x:1,y:154,w:197,h:151} },
+		doqTigergunFireRight2: {
+			rect: {/*00q-tigergun-fire2*/x:1,y:1,w:238,h:151} },
+		doqTigergunFireLeft0: {
+			rect: {/*00q-tigergun-fire0*/x:482,y:468,w:83,h:151},
+			mirror: true },
+		doqTigergunFireLeft1: {
+			rect: {/*00q-tigergun-fire1*/x:1,y:154,w:197,h:151},
+			mirror: true },
+		doqTigergunFireLeft2: {
+			rect: {/*00q-tigergun-fire2*/x:1,y:1,w:238,h:151},
+			mirror: true },
+		doqWalkRight0: { rect: {/*00q-walk0*/x:1012,y:1,w:71,h:151} },
+		doqWalkRight1: { rect: {/*00q-walk1*/x:730,y:468,w:79,h:146} },
+		doqWalkRight2: { rect: {/*00q-walk2*/x:614,y:619,w:45,h:157} },
+		doqWalkRight3: { rect: {/*00q-walk3*/x:49,y:565,w:46,h:160} },
+		doqWalkRight4: { rect: {/*00q-walk4*/x:939,y:1,w:71,h:151} },
+		doqWalkRight5: { rect: {/*00q-walk5*/x:649,y:468,w:79,h:146} },
+		doqWalkRight6: { rect: {/*00q-walk6*/x:567,y:619,w:45,h:157} },
+		doqWalkRight7: { rect: {/*00q-walk7*/x:1,y:565,w:46,h:160} },
+		doqWalkLeft0: { rect: {/*00q-walk0*/x:1012,y:1,w:71,h:151},
+			mirror: true },
+		doqWalkLeft1: { rect: {/*00q-walk1*/x:730,y:468,w:79,h:146},
+			mirror: true },
+		doqWalkLeft2: { rect: {/*00q-walk2*/x:614,y:619,w:45,h:157},
+			mirror: true },
+		doqWalkLeft3: { rect: {/*00q-walk3*/x:49,y:565,w:46,h:160},
+			mirror: true },
+		doqWalkLeft4: { rect: {/*00q-walk4*/x:939,y:1,w:71,h:151},
+			mirror: true },
+		doqWalkLeft5: { rect: {/*00q-walk5*/x:649,y:468,w:79,h:146},
+			mirror: true },
+		doqWalkLeft6: { rect: {/*00q-walk6*/x:567,y:619,w:45,h:157},
+			mirror: true },
+		doqWalkLeft7: { rect: {/*00q-walk7*/x:1,y:565,w:46,h:160},
+			mirror: true },
+		tangoDead: { rect: {/*tango-dead*/x:545,y:232,w:135,h:80} },
+		tangoNeutral: { rect: {/*tango-neutral*/x:1231,y:1,w:64,h:151} },
+		tangoPanic: { rect: {/*tango-panic*/x:200,y:396,w:82,h:159} },
+		tangoRunRight0: { rect: {/*tango-run0*/x:811,y:321,w:98,h:144} },
+		tangoRunRight1: { rect: {/*tango-run1*/x:605,y:321,w:104,h:144} },
+		tangoRunRight2: { rect: {/*tango-run2*/x:965,y:321,w:51,h:144} },
+		tangoRunRight3: { rect: {/*tango-run3*/x:847,y:1,w:90,h:148} },
+		tangoRunRight4: { rect: {/*tango-run4*/x:747,y:1,w:98,h:144} },
+		tangoRunRight5: { rect: {/*tango-run5*/x:541,y:1,w:104,h:144} },
+		tangoRunRight6: { rect: {/*tango-run6*/x:911,y:321,w:52,h:144} },
+		tangoRunRight7: { rect: {/*tango-run7*/x:93,y:413,w:90,h:148} },
+		tangoRunLeft0: { rect: {/*tango-run0*/x:811,y:321,w:98,h:144},
+			mirror: true },
+		tangoRunLeft1: { rect: {/*tango-run1*/x:605,y:321,w:104,h:144},
+			mirror: true },
+		tangoRunLeft2: { rect: {/*tango-run2*/x:965,y:321,w:51,h:144},
+			mirror: true },
+		tangoRunLeft3: { rect: {/*tango-run3*/x:847,y:1,w:90,h:148},
+			mirror: true },
+		tangoRunLeft4: { rect: {/*tango-run4*/x:747,y:1,w:98,h:144},
+			mirror: true },
+		tangoRunLeft5: { rect: {/*tango-run5*/x:541,y:1,w:104,h:144},
+			mirror: true },
+		tangoRunLeft6: { rect: {/*tango-run6*/x:911,y:321,w:52,h:144},
+			mirror: true },
+		tangoRunLeft7: { rect: {/*tango-run7*/x:93,y:413,w:90,h:148},
+			mirror: true },
+		tangoShootRight0: { rect: {/*tango-shoot0*/x:567,y:468,w:80,h:149} },
+		tangoShootRight1: { rect: {/*tango-shoot1*/x:393,y:468,w:87,h:149} },
+		tangoShootRight2: { rect: {/*tango-shoot2*/x:973,y:468,w:57,h:149} },
+		tangoShootLeft0: { rect: {/*tango-shoot0*/x:567,y:468,w:80,h:149},
+			mirror: true },
+		tangoShootLeft1: { rect: {/*tango-shoot1*/x:393,y:468,w:87,h:149},
+			mirror: true },
+		tangoShootLeft2: { rect: {/*tango-shoot2*/x:973,y:468,w:57,h:149},
+			mirror: true },
+		tangoStunned: { rect: {/*tango-stunned*/x:429,y:1,w:110,h:151} },
+		tangoWalkRight0: { rect: {/*tango-walk0*/x:1158,y:1,w:71,h:150} },
+		tangoWalkRight1: { rect: {/*tango-walk1*/x:892,y:468,w:79,h:145} },
+		tangoWalkRight2: { rect: {/*tango-walk2*/x:708,y:619,w:45,h:155} },
+		tangoWalkRight3: { rect: {/*tango-walk3*/x:145,y:565,w:46,h:159} },
+		tangoWalkRight4: { rect: {/*tango-walk4*/x:1085,y:1,w:71,h:150} },
+		tangoWalkRight5: { rect: {/*tango-walk5*/x:811,y:468,w:79,h:145} },
+		tangoWalkRight6: { rect: {/*tango-walk6*/x:661,y:619,w:45,h:155} },
+		tangoWalkRight7: { rect: {/*tango-walk7*/x:97,y:565,w:46,h:159} },
+		tangoWalkLeft0: { rect: {/*tango-walk0*/x:1158,y:1,w:71,h:150},
+			mirror: true },
+		tangoWalkLeft1: { rect: {/*tango-walk1*/x:892,y:468,w:79,h:145},
+			mirror: true },
+		tangoWalkLeft2: { rect: {/*tango-walk2*/x:708,y:619,w:45,h:155},
+			mirror: true },
+		tangoWalkLeft3: { rect: {/*tango-walk3*/x:145,y:565,w:46,h:159},
+			mirror: true },
+		tangoWalkLeft4: { rect: {/*tango-walk4*/x:1085,y:1,w:71,h:150},
+			mirror: true },
+		tangoWalkLeft5: { rect: {/*tango-walk5*/x:811,y:468,w:79,h:145},
+			mirror: true },
+		tangoWalkLeft6: { rect: {/*tango-walk6*/x:661,y:619,w:45,h:155},
+			mirror: true },
+		tangoWalkLeft7: { rect: {/*tango-walk7*/x:97,y:565,w:46,h:159},
+			mirror: true },
+		tigerJumpRight0: { rect: {/*tiger-jump0*/x:241,y:1,w:186,h:76} },
+		tigerJumpRight1: { rect: {/*tiger-jump1*/x:1,y:307,w:189,h:104} },
+		tigerJumpRight2: { rect: {/*tiger-jump2*/x:200,y:154,w:209,h:76} },
+		tigerJumpRight3: { rect: {/*tiger-jump3*/x:200,y:321,w:191,h:73} },
+		tigerJumpLeft0: { rect: {/*tiger-jump0*/x:241,y:1,w:186,h:76},
+			mirror: true },
+		tigerJumpLeft1: { rect: {/*tiger-jump1*/x:1,y:307,w:189,h:104},
+			mirror: true },
+		tigerJumpLeft2: { rect: {/*tiger-jump2*/x:200,y:154,w:209,h:76},
+			mirror: true },
+		tigerJumpLeft3: { rect: {/*tiger-jump3*/x:200,y:321,w:191,h:73},
+			mirror: true },
+		tigerRightLookLeft: { rect: {/*tiger-look*/x:389,y:232,w:154,h:87} },
+		tigerLeftLookRight: { rect: {/*tiger-look*/x:389,y:232,w:154,h:87},
+			mirror: true },
+		tigerRight: { rect: {/*tiger*/x:200,y:232,w:187,h:87} },
+		tigerLeft: { rect: {/*tiger*/x:200,y:232,w:187,h:87},
+			mirror: true },
+	},
+	mapSymbols = {
+		" ":"carpet",
+		"w":"wall",
+	},
+	level = 0,
+	levels = [
+		function()
+		{
+			reset();
+
+			addPlayer( 5.5, 5.5 );
+
+			addTango( 8, 8 );
+			addTango( 4, 2 );
+
+			loadMap( 12, 12,
+				"            "+
+				"        w   "+
+				"        w   "+
+				"        w   "+
+				"        w   "+
+				"            "+
+				"            "+
+				"            "+
+				"            "+
+				"            "+
+				"            "+
+				"            " );
+		}
+	],
+	atlas,
+	canvas,
 	ctx,
+	resizeTimer,
+	resizing,
 	width,
 	height,
+	ratio,
+	centerX,
+	centerY,
+	cellSize,
+	scaleFactor,
+	map = [],
+	mapCols,
+	mapRows,
+	mapCells,
+	mapWidth,
+	mapHeight,
+	mapLeft,
+	mapTop,
+	playerWidthInCell,
+	playerHeightInCell,
+	sprites = {},
+	entities = [],
+	entitiesLength = 0,
+	player,
 	now,
 	factor,
-	last;
+	last,
+	animationFrequency = 80,
+	pointerLength = 0,
+	pointerX = [],
+	pointerY = [],
+	keysDown = [],
+	tigerLoose = false;
+
+function drawSprite( sprite, x, y )
+{
+	ctx.drawImage(
+		sprite,
+		(x-sprite.centerX) | 0,
+		(y-sprite.centerY) | 0 );
+}
+
+function drawEntity( e )
+{
+	var name = e.name,
+		x = e.x,
+		y = e.y,
+		vx = e.vx,
+		vy = e.vy,
+		sprite;
+
+	if( vx || vy )
+	{
+		var direction,
+			action;
+
+		if( e.isTiger )
+		{
+			action = "Jump";
+			frames = 4;
+		}
+		else
+		{
+			action = tigerLoose ? "Run" : "Walk";
+			frames = 8;
+		}
+
+		if( vx < 0 )
+			direction = "Left";
+		else
+			direction = "Right";
+
+		var frame = e.frame;
+
+		if( now-e.last > animationFrequency )
+		{
+			e.frame = ++frame;
+			e.last = now;
+		}
+
+		sprite = name+action+direction+(frame % frames);
+	}
+	else if( e.isTiger )
+		sprite = name+"Left";
+	else
+		sprite = name+"Neutral";
+
+	drawSprite(
+		sprites[sprite],
+		mapLeft+x,
+		mapTop+y );
+}
+
+function compareY( a, b )
+{
+	if( a.y > b.y )
+		return 1;
+
+	if( a.y < b.y )
+		return -1;
+
+	return 0;
+}
+
+function drawEntities()
+{
+	entities.sort( compareY );
+
+	for( var n = 0; n < entitiesLength; ++n )
+		drawEntity( entities[n] );
+}
 
 function draw()
 {
-	ctx.clearRect( 0, 0, width, height );
+	ctx.fillStyle = "#f2f2f2";
+	ctx.fillRect( 0, 0, width, height );
 
-	ctx.fillStyle = "#f00";
-	ctx.fillRect( 0, 0, width/1000*(now % 1000), height );
+	drawEntities();
+}
+
+function alignMap()
+{
+	var px = player.x,
+		py = player.y;
+
+	if( mapWidth > width )
+	{
+		mapLeft = centerX-px;
+
+		if( mapLeft > 0 )
+			mapLeft = 0;
+		else if( mapLeft+mapWidth < width )
+			mapLeft = width-mapWidth;
+	}
+
+	if( mapHeight > height )
+	{
+		mapTop = centerY-py;
+
+		if( mapTop > 0 )
+			mapTop = 0;
+		else if( mapTop+mapHeight < height )
+			mapTop = height-mapHeight;
+	}
+}
+
+function cell( col, row )
+{
+	var idx = (row | 0)*mapCols+(col | 0);
+
+	if( idx < mapCells )
+	{
+		var field = map[idx];
+
+		/*if( !field ||
+			!field.sprite )
+			return false;
+
+		//return !field.sprite.blocks;*/
+		return true;
+	}
+
+	return false;
+}
+
+function canMoveTo( col, row )
+{
+	var left = col-playerWidthInCell,
+		top = row-playerHeightInCell,
+		right = col+playerWidthInCell,
+		bottom = row+playerHeightInCell;
+
+	return cell( left, top ) &&
+		cell( right, top ) &&
+		cell( left, bottom ) &&
+		cell( right, bottom );
+}
+
+function moveToBorder( col, row )
+{
+	if( col < 0 )
+		player.col = (player.col | 0)+playerWidthInCell+.01;
+	else if( col > 0 )
+		player.col = (player.col | 0)+(.99-playerWidthInCell);
+
+	if( row < 0 )
+		player.row = (player.row | 0)+playerHeightInCell+.01;
+	else if( row > 0 )
+		player.row = (player.row | 0)+(.99-playerHeightInCell);
+}
+
+function moveTo( col, row )
+{
+	if( col < playerWidthInCell )
+		col = playerWidthInCell;
+	else if( col > mapCols-playerWidthInCell )
+		col = mapCols-playerWidthInCell;
+
+	if( row < playerHeightInCell )
+		row = playerHeightInCell;
+	else if( row > mapRows-playerHeightInCell )
+		row = mapRows-playerHeightInCell;
+
+	var pc = player.col,
+		pr = player.row,
+		dx = col-pc,
+		dy = row-pr,
+		max = tigerLoose ? .06 : .03;
+
+	if( Math.abs( dx ) > max )
+		dx = dx > 0 ? max : -max;
+
+	if( Math.abs( dy ) > max )
+		dy = dy > 0 ? max : -max;
+
+	var tc = pc+dx,
+		tr = pr+dy;
+
+	if( canMoveTo( tc, tr ) )
+	{
+		pc = tc;
+		pr = tr;
+	}
+	else if( canMoveTo( tc, pr ) )
+	{
+		dy = 0;
+		pc = tc;
+	}
+	else if( canMoveTo( pc, tr ) )
+	{
+		dx = 0;
+		pr = tr;
+	}
+	else
+		dx = dy = 0;
+
+	moveToBorder( dx, dy );
+
+	player.col = pc;
+	player.row = pr;
+
+	player.vx = dx;
+	player.vy = dy;
+
+	player.x = pc*cellSize,
+	player.y = pr*cellSize;
+}
+
+function input()
+{
+	player.vx = player.vy = 0;
+
+	if( pointerLength )
+	{
+		moveTo(
+			(pointerX[0]-mapLeft)/cellSize,
+			(pointerY[0]-mapTop)/cellSize );
+	}
+	else
+	{
+		var dx = 0,
+			dy = 0;
+
+		if( keysDown[37] )
+			dx = -1;
+		else if( keysDown[39] )
+			dx = 1;
+
+		if( keysDown[38] )
+			dy = -1;
+		else if( keysDown[40] )
+			dy = 1;
+
+		if( dx || dy )
+			moveTo( player.col+dx, player.row+dy );
+	}
 }
 
 function run()
@@ -51,28 +507,315 @@ function run()
 	factor = (now-last)/16;
 	last = now;
 
+	input();
+	alignMap();
 	draw();
+}
+
+function setPointers( ev, down )
+{
+	var e = ev || event;
+
+	if( down < 1 )
+	{
+		// process remaining touches
+		if( pointerLength > 0 &&
+			e.touches &&
+			(down = e.touches.length) )
+			return setPointers( e, down );
+
+		pointerLength = 0;
+	}
+	else if( e.touches )
+	{
+		pointerLength = e.touches.length;
+
+		for( var n = 0; n < pointerLength; ++n )
+		{
+			var t = e.touches[n];
+
+			pointerX[n] = t.pageX;
+			pointerY[n] = t.pageY;
+		}
+	}
+	else if( typeof e.clientX !== "undefined" )
+	{
+		pointerX[0] = e.clientX;
+		pointerY[0] = e.clientY;
+		pointerLength = 1;
+	}
+	else if( typeof e.pageX !== "undefined" )
+	{
+		pointerX[0] = e.pageX;
+		pointerY[0] = e.pageY;
+		pointerLength = 1;
+	}
+
+	if( ratio != 1 )
+		for( var n = 0; n < pointerLength; ++n )
+		{
+			pointerX[n] = pointerX[n]*ratio | 0;
+			pointerY[n] = pointerY[n]*ratio | 0;
+		}
+
+	// to avoid overscrolling on iOS it's important to
+	// catch pointer events
+	e.preventDefault();
+	return false;
+}
+
+function pointerUp( ev )
+{
+	return setPointers( ev, 0 );
+}
+
+function pointerMove( ev )
+{
+	return setPointers( ev, pointerLength );
+}
+
+function pointerDown( ev )
+{
+	return setPointers( ev, 1 );
+}
+
+function setKey( ev, pressed )
+{
+	var e = ev || event;
+
+	keysDown[e.keyCode] = pressed;
+
+	e.preventDefault();
+	return false;
+}
+
+function keyUp( ev )
+{
+	return setKey( ev, false );
+}
+
+function keyDown( ev )
+{
+	return setKey( ev, true );
+}
+
+function reset()
+{
+	entitiesLength = entities.length = 0;
+}
+
+function addPlayer( col, row )
+{
+	player = {
+		name: "doq",
+		col: col,
+		row: row };
+
+	entities.push( player );
+}
+
+function addTango( col, row )
+{
+	entities.push( {
+		name: "tango",
+		col: col,
+		row: row } );
+}
+
+function addTiger( col, row )
+{
+	entities.push( {
+		name: "tiger",
+		col: col,
+		row: row } );
+
+	tigerLoose = true;
+}
+
+function initEntities()
+{
+	entitiesLength = entities.length;
+
+	for( var n = entitiesLength; n--; )
+	{
+		var e = entities[n];
+
+		e.x = e.col*cellSize;
+		e.y = e.row*cellSize;
+
+		e.vx = e.vy = 0;
+		e.frame =
+		e.last = 0;
+	}
+}
+
+function loadMap( cols, rows, template )
+{
+	initEntities();
+
+	map.length = 0;
+
+	mapCols = cols;
+	mapRows = rows;
+	mapCells = mapCols*mapRows;
+
+	var sprite = sprites["doqNeutral"],
+		playerWidth = sprite.width >> 1,
+		playerHeight = sprite.height >> 1,
+		normalizedCellSize = 1/cellSize;
+
+	playerWidthInCell = normalizedCellSize*playerWidth;
+	playerHeightInCell = normalizedCellSize*playerHeight;
+
+	mapWidth = mapCols*cellSize;
+	mapHeight = mapRows*cellSize;
+	mapLeft = width-mapWidth >> 1;
+	mapTop = height-mapHeight >> 1;
+
+	for( var n = template.length; n--; )
+	{
+		var symbol = template.charAt( n ),
+			sprite = sprites[mapSymbols[symbol]];
+
+		map[n] = { sprite: sprite };
+	}
+}
+
+function scaleSprite( res, rect, w, h )
+{
+	var c = document.createElement( "canvas" ),
+		x = c.getContext( "2d" ),
+		l = 0,
+		t = 0;
+
+	c.width = w;
+	c.height = h;
+
+	c.centerX = w >> 1;
+	c.centerY = h >> 1;
+
+	if( res.mirror )
+	{
+		x.setTransform( -1, 0, 0, 1, 0, 0 );
+		l = -w;
+	}
+	else if( res.upsideDown )
+	{
+		x.setTransform( -1, 0, 0, -1, 0, 0 );
+		l = -w;
+		t = -h;
+	}
+
+	x.drawImage(
+		atlas,
+		rect.x | 0,
+		rect.y | 0,
+		rect.w | 0,
+		rect.h | 0,
+		l | 0,
+		t | 0,
+		w | 0,
+		h | 0 );
+
+	return c;
+}
+
+function scale()
+{
+	for( var name in resources )
+	{
+		var res = resources[name],
+			rc = res.rect,
+			w = Math.max( rc.w*scaleFactor | 0, 1 ),
+			h = Math.max( rc.h*scaleFactor | 0, 1 );
+
+		sprites[name] = scaleSprite( res, rc, w, h );
+	}
 }
 
 function resize()
 {
-	canvas.width = width = window.innerWidth;
-	canvas.height = height = window.innerHeight;
-	canvas.style.width = width+"px";
-	canvas.style.height = height+"px";
+	var w = window.innerWidth,
+		h = window.innerHeight;
+
+	width = w*ratio | 0;
+	height = h*ratio | 0;
+
+	centerX = width >> 1;
+	centerY = height >> 1;
+
+	canvas.width = width;
+	canvas.height = height;
+	canvas.style.width = w+"px";
+	canvas.style.height = h+"px";
+
+	cellSize = Math.min(
+		resources.doqNeutral.rect.h,
+		Math.min( width, height )/6 | 0 );
+
+	scaleFactor = cellSize/resources.doqNeutral.rect.h;
+
+	scale();
+	levels[level]();
+
+	resizing = false;
+}
+
+function scheduleResize()
+{
+	if( resizeTimer )
+		clearTimeout( resizeTimer );
+
+	resizing = true;
+	resizeTimer = setTimeout( resize, 200 );
+}
+
+function init()
+{
+	var d = document;
+
+	if( !(canvas = d.getElementById( "Game" )) ||
+		!(ctx = canvas.getContext( "2d", { alpha: false } )) )
+		return;
+
+	ratio =
+		(window.devicePixelRatio || 1)/
+		(ctx.webkitBackingStorePixelRatio ||
+			ctx.mozBackingStorePixelRatio ||
+			ctx.msBackingStorePixelRatio ||
+			ctx.oBackingStorePixelRatio ||
+			ctx.backingStorePixelRatio ||
+			1);
+
+	resize()
+	window.onresize = scheduleResize;
+
+	d.onkeydown = keyDown;
+	d.onkeyup = keyUp;
+
+	d.onmousedown = pointerDown;
+	d.onmousemove = pointerMove;
+	d.onmouseup = pointerUp;
+	d.onmouseout = pointerUp;
+
+	if( "ontouchstart" in d )
+	{
+		d.ontouchstart = pointerDown;
+		d.ontouchmove = pointerMove;
+		d.ontouchend = pointerUp;
+		d.ontouchleave = pointerUp;
+		d.ontouchcancel = pointerUp;
+	}
+
+	last = Date.now()-16;
+	run();
 }
 
 function load()
 {
-	if( !(canvas = document.getElementById( "Game" )) ||
-		!(ctx = canvas.getContext( "2d" )) )
-		return;
-
-	resize()
-	window.onresize = resize;
-
-	last = Date.now()-16;
-	run();
+	atlas = new Image();
+	atlas.src = "atlas.png";
+	atlas.onload = init;
 }
 
 window.onload = load;
