@@ -11,7 +11,7 @@ html,
 body
 {
 	margin: 0; padding: 0;
-	background: #f2f2f2;
+	background: #4d4d4d;
 	overflow: hidden;
 	-ms-touch-action: none;
 }
@@ -41,43 +41,43 @@ var requestAnimFrame =
 			window.setTimeout( callback, 16 );
 		},
 	resources = {
-		doqDead: { rect: {/*00q-dead*/x:241,y:79,w:130,h:51} },
-		doqHit0: { rect: {/*00q-hit0*/x:262,y:557,w:59,h:152} },
-		doqHit1: { rect: {/*00q-hit1*/x:1122,y:321,w:62,h:124} },
-		doqNeutral: { rect: {/*00q-neutral*/x:200,y:557,w:60,h:153} },
-		doqRunRight0: { rect: {/*00q-run0*/x:711,y:321,w:98,h:145} },
-		doqRunRight1: { rect: {/*00q-run1*/x:499,y:321,w:104,h:145} },
-		doqRunRight2: { rect: {/*00q-run2*/x:1070,y:321,w:50,h:145} },
-		doqRunRight3: { rect: {/*00q-run3*/x:1,y:413,w:90,h:150} },
-		doqRunRight4: { rect: {/*00q-run4*/x:647,y:1,w:98,h:145} },
-		doqRunRight5: { rect: {/*00q-run5*/x:393,y:321,w:104,h:145} },
-		doqRunRight6: { rect: {/*00q-run6*/x:1018,y:321,w:50,h:145} },
-		doqRunRight7: { rect: {/*00q-run7*/x:284,y:396,w:90,h:150} },
-		doqRunLeft0: { rect: {/*00q-run0*/x:711,y:321,w:98,h:145},
+		doqDead: { rect: {/*00q-dead*/x:688,y:316,w:130,h:51} },
+		doqHit0: { rect: {/*00q-hit0*/x:649,y:789,w:59,h:152} },
+		doqHit1: { rect: {/*00q-hit1*/x:758,y:781,w:62,h:124} },
+		doqNeutral: { rect: {/*00q-neutral*/x:649,y:634,w:60,h:153} },
+		doqRunRight0: { rect: {/*00q-run0*/x:468,y:630,w:98,h:145} },
+		doqRunRight1: { rect: {/*00q-run1*/x:362,y:630,w:104,h:145} },
+		doqRunRight2: { rect: {/*00q-run2*/x:758,y:634,w:50,h:145} },
+		doqRunRight3: { rect: {/*00q-run3*/x:468,y:1382,w:90,h:150} },
+		doqRunRight4: { rect: {/*00q-run4*/x:468,y:483,w:98,h:145} },
+		doqRunRight5: { rect: {/*00q-run5*/x:362,y:483,w:104,h:145} },
+		doqRunRight6: { rect: {/*00q-run6*/x:755,y:1,w:50,h:145} },
+		doqRunRight7: { rect: {/*00q-run7*/x:468,y:1230,w:90,h:150} },
+		doqRunLeft0: { rect: {/*00q-run0*/x:468,y:630,w:98,h:145},
 			mirror: true },
-		doqRunLeft1: { rect: {/*00q-run1*/x:499,y:321,w:104,h:145},
+		doqRunLeft1: { rect: {/*00q-run1*/x:362,y:630,w:104,h:145},
 			mirror: true },
-		doqRunLeft2: { rect: {/*00q-run2*/x:1070,y:321,w:50,h:145},
+		doqRunLeft2: { rect: {/*00q-run2*/x:758,y:634,w:50,h:145},
 			mirror: true },
-		doqRunLeft3: { rect: {/*00q-run3*/x:1,y:413,w:90,h:150},
+		doqRunLeft3: { rect: {/*00q-run3*/x:468,y:1382,w:90,h:150},
 			mirror: true },
-		doqRunLeft4: { rect: {/*00q-run4*/x:647,y:1,w:98,h:145},
+		doqRunLeft4: { rect: {/*00q-run4*/x:468,y:483,w:98,h:145},
 			mirror: true },
-		doqRunLeft5: { rect: {/*00q-run5*/x:393,y:321,w:104,h:145},
+		doqRunLeft5: { rect: {/*00q-run5*/x:362,y:483,w:104,h:145},
 			mirror: true },
-		doqRunLeft6: { rect: {/*00q-run6*/x:1018,y:321,w:50,h:145},
+		doqRunLeft6: { rect: {/*00q-run6*/x:755,y:1,w:50,h:145},
 			mirror: true },
-		doqRunLeft7: { rect: {/*00q-run7*/x:284,y:396,w:90,h:150},
+		doqRunLeft7: { rect: {/*00q-run7*/x:468,y:1230,w:90,h:150},
 			mirror: true },
-		doqStunned: { rect: {/*00q-stunned*/x:1032,y:468,w:51,h:149} },
+		doqStunned: { rect: {/*00q-stunned*/x:702,y:1,w:51,h:149} },
 		doqTigergunFireRight0: {
-			rect: {/*00q-tigergun-fire0*/x:482,y:468,w:83,h:151} },
+			rect: {/*00q-tigergun-fire0*/x:544,y:1,w:83,h:151} },
 		doqTigergunFireRight1: {
 			rect: {/*00q-tigergun-fire1*/x:1,y:154,w:197,h:151} },
 		doqTigergunFireRight2: {
 			rect: {/*00q-tigergun-fire2*/x:1,y:1,w:238,h:151} },
 		doqTigergunFireLeft0: {
-			rect: {/*00q-tigergun-fire0*/x:482,y:468,w:83,h:151},
+			rect: {/*00q-tigergun-fire0*/x:544,y:1,w:83,h:151},
 			mirror: true },
 		doqTigergunFireLeft1: {
 			rect: {/*00q-tigergun-fire1*/x:1,y:154,w:197,h:151},
@@ -85,113 +85,172 @@ var requestAnimFrame =
 		doqTigergunFireLeft2: {
 			rect: {/*00q-tigergun-fire2*/x:1,y:1,w:238,h:151},
 			mirror: true },
-		doqWalkRight0: { rect: {/*00q-walk0*/x:1012,y:1,w:71,h:151} },
-		doqWalkRight1: { rect: {/*00q-walk1*/x:730,y:468,w:79,h:146} },
-		doqWalkRight2: { rect: {/*00q-walk2*/x:614,y:619,w:45,h:157} },
-		doqWalkRight3: { rect: {/*00q-walk3*/x:49,y:565,w:46,h:160} },
-		doqWalkRight4: { rect: {/*00q-walk4*/x:939,y:1,w:71,h:151} },
-		doqWalkRight5: { rect: {/*00q-walk5*/x:649,y:468,w:79,h:146} },
-		doqWalkRight6: { rect: {/*00q-walk6*/x:567,y:619,w:45,h:157} },
-		doqWalkRight7: { rect: {/*00q-walk7*/x:1,y:565,w:46,h:160} },
-		doqWalkLeft0: { rect: {/*00q-walk0*/x:1012,y:1,w:71,h:151},
+		doqWalkRight0: { rect: {/*00q-walk0*/x:568,y:1224,w:71,h:151} },
+		doqWalkRight1: { rect: {/*00q-walk1*/x:568,y:782,w:79,h:146} },
+		doqWalkRight2: { rect: {/*00q-walk2*/x:711,y:793,w:45,h:157} },
+		doqWalkRight3: { rect: {/*00q-walk3*/x:649,y:1105,w:46,h:160} },
+		doqWalkRight4: { rect: {/*00q-walk4*/x:573,y:154,w:71,h:151} },
+		doqWalkRight5: { rect: {/*00q-walk5*/x:568,y:634,w:79,h:146} },
+		doqWalkRight6: { rect: {/*00q-walk6*/x:711,y:634,w:45,h:157} },
+		doqWalkRight7: { rect: {/*00q-walk7*/x:649,y:943,w:46,h:160} },
+		doqWalkLeft0: { rect: {/*00q-walk0*/x:568,y:1224,w:71,h:151},
 			mirror: true },
-		doqWalkLeft1: { rect: {/*00q-walk1*/x:730,y:468,w:79,h:146},
+		doqWalkLeft1: { rect: {/*00q-walk1*/x:568,y:782,w:79,h:146},
 			mirror: true },
-		doqWalkLeft2: { rect: {/*00q-walk2*/x:614,y:619,w:45,h:157},
+		doqWalkLeft2: { rect: {/*00q-walk2*/x:711,y:793,w:45,h:157},
 			mirror: true },
-		doqWalkLeft3: { rect: {/*00q-walk3*/x:49,y:565,w:46,h:160},
+		doqWalkLeft3: { rect: {/*00q-walk3*/x:649,y:1105,w:46,h:160},
 			mirror: true },
-		doqWalkLeft4: { rect: {/*00q-walk4*/x:939,y:1,w:71,h:151},
+		doqWalkLeft4: { rect: {/*00q-walk4*/x:573,y:154,w:71,h:151},
 			mirror: true },
-		doqWalkLeft5: { rect: {/*00q-walk5*/x:649,y:468,w:79,h:146},
+		doqWalkLeft5: { rect: {/*00q-walk5*/x:568,y:634,w:79,h:146},
 			mirror: true },
-		doqWalkLeft6: { rect: {/*00q-walk6*/x:567,y:619,w:45,h:157},
+		doqWalkLeft6: { rect: {/*00q-walk6*/x:711,y:634,w:45,h:157},
 			mirror: true },
-		doqWalkLeft7: { rect: {/*00q-walk7*/x:1,y:565,w:46,h:160},
+		doqWalkLeft7: { rect: {/*00q-walk7*/x:649,y:943,w:46,h:160},
 			mirror: true },
-		tangoDead: { rect: {/*tango-dead*/x:545,y:232,w:135,h:80} },
-		tangoNeutral: { rect: {/*tango-neutral*/x:1231,y:1,w:64,h:151} },
-		tangoPanic: { rect: {/*tango-panic*/x:200,y:396,w:82,h:159} },
-		tangoRunRight0: { rect: {/*tango-run0*/x:811,y:321,w:98,h:144} },
-		tangoRunRight1: { rect: {/*tango-run1*/x:605,y:321,w:104,h:144} },
-		tangoRunRight2: { rect: {/*tango-run2*/x:965,y:321,w:51,h:144} },
-		tangoRunRight3: { rect: {/*tango-run3*/x:847,y:1,w:90,h:148} },
-		tangoRunRight4: { rect: {/*tango-run4*/x:747,y:1,w:98,h:144} },
-		tangoRunRight5: { rect: {/*tango-run5*/x:541,y:1,w:104,h:144} },
-		tangoRunRight6: { rect: {/*tango-run6*/x:911,y:321,w:52,h:144} },
-		tangoRunRight7: { rect: {/*tango-run7*/x:93,y:413,w:90,h:148} },
-		tangoRunLeft0: { rect: {/*tango-run0*/x:811,y:321,w:98,h:144},
+		tangoDead: { rect: {/*tango-dead*/x:551,y:316,w:135,h:80} },
+		tangoNeutral: { rect: {/*tango-neutral*/x:646,y:154,w:64,h:151} },
+		tangoPanic: { rect: {/*tango-panic*/x:468,y:1069,w:82,h:159} },
+		tangoRunRight0: { rect: {/*tango-run0*/x:468,y:923,w:98,h:144} },
+		tangoRunRight1: { rect: {/*tango-run1*/x:362,y:923,w:104,h:144} },
+		tangoRunRight2: { rect: {/*tango-run2*/x:712,y:154,w:51,h:144} },
+		tangoRunRight3: { rect: {/*tango-run3*/x:362,y:1219,w:90,h:148} },
+		tangoRunRight4: { rect: {/*tango-run4*/x:468,y:777,w:98,h:144} },
+		tangoRunRight5: { rect: {/*tango-run5*/x:362,y:777,w:104,h:144} },
+		tangoRunRight6: { rect: {/*tango-run6*/x:709,y:483,w:52,h:144} },
+		tangoRunRight7: { rect: {/*tango-run7*/x:362,y:1069,w:90,h:148} },
+		tangoRunLeft0: { rect: {/*tango-run0*/x:468,y:923,w:98,h:144},
 			mirror: true },
-		tangoRunLeft1: { rect: {/*tango-run1*/x:605,y:321,w:104,h:144},
+		tangoRunLeft1: { rect: {/*tango-run1*/x:362,y:923,w:104,h:144},
 			mirror: true },
-		tangoRunLeft2: { rect: {/*tango-run2*/x:965,y:321,w:51,h:144},
+		tangoRunLeft2: { rect: {/*tango-run2*/x:712,y:154,w:51,h:144},
 			mirror: true },
-		tangoRunLeft3: { rect: {/*tango-run3*/x:847,y:1,w:90,h:148},
+		tangoRunLeft3: { rect: {/*tango-run3*/x:362,y:1219,w:90,h:148},
 			mirror: true },
-		tangoRunLeft4: { rect: {/*tango-run4*/x:747,y:1,w:98,h:144},
+		tangoRunLeft4: { rect: {/*tango-run4*/x:468,y:777,w:98,h:144},
 			mirror: true },
-		tangoRunLeft5: { rect: {/*tango-run5*/x:541,y:1,w:104,h:144},
+		tangoRunLeft5: { rect: {/*tango-run5*/x:362,y:777,w:104,h:144},
 			mirror: true },
-		tangoRunLeft6: { rect: {/*tango-run6*/x:911,y:321,w:52,h:144},
+		tangoRunLeft6: { rect: {/*tango-run6*/x:709,y:483,w:52,h:144},
 			mirror: true },
-		tangoRunLeft7: { rect: {/*tango-run7*/x:93,y:413,w:90,h:148},
+		tangoRunLeft7: { rect: {/*tango-run7*/x:362,y:1069,w:90,h:148},
 			mirror: true },
-		tangoShootRight0: { rect: {/*tango-shoot0*/x:567,y:468,w:80,h:149} },
-		tangoShootRight1: { rect: {/*tango-shoot1*/x:393,y:468,w:87,h:149} },
-		tangoShootRight2: { rect: {/*tango-shoot2*/x:973,y:468,w:57,h:149} },
-		tangoShootLeft0: { rect: {/*tango-shoot0*/x:567,y:468,w:80,h:149},
+		tangoShootRight0: { rect: {/*tango-shoot0*/x:568,y:483,w:80,h:149} },
+		tangoShootRight1: { rect: {/*tango-shoot1*/x:362,y:1369,w:87,h:149} },
+		tangoShootRight2: { rect: {/*tango-shoot2*/x:650,y:483,w:57,h:149} },
+		tangoShootLeft0: { rect: {/*tango-shoot0*/x:568,y:483,w:80,h:149},
 			mirror: true },
-		tangoShootLeft1: { rect: {/*tango-shoot1*/x:393,y:468,w:87,h:149},
+		tangoShootLeft1: { rect: {/*tango-shoot1*/x:362,y:1369,w:87,h:149},
 			mirror: true },
-		tangoShootLeft2: { rect: {/*tango-shoot2*/x:973,y:468,w:57,h:149},
+		tangoShootLeft2: { rect: {/*tango-shoot2*/x:650,y:483,w:57,h:149},
 			mirror: true },
-		tangoStunned: { rect: {/*tango-stunned*/x:429,y:1,w:110,h:151} },
-		tangoWalkRight0: { rect: {/*tango-walk0*/x:1158,y:1,w:71,h:150} },
-		tangoWalkRight1: { rect: {/*tango-walk1*/x:892,y:468,w:79,h:145} },
-		tangoWalkRight2: { rect: {/*tango-walk2*/x:708,y:619,w:45,h:155} },
-		tangoWalkRight3: { rect: {/*tango-walk3*/x:145,y:565,w:46,h:159} },
-		tangoWalkRight4: { rect: {/*tango-walk4*/x:1085,y:1,w:71,h:150} },
-		tangoWalkRight5: { rect: {/*tango-walk5*/x:811,y:468,w:79,h:145} },
-		tangoWalkRight6: { rect: {/*tango-walk6*/x:661,y:619,w:45,h:155} },
-		tangoWalkRight7: { rect: {/*tango-walk7*/x:97,y:565,w:46,h:159} },
-		tangoWalkLeft0: { rect: {/*tango-walk0*/x:1158,y:1,w:71,h:150},
+		tangoStunned: { rect: {/*tango-stunned*/x:432,y:1,w:110,h:151} },
+		tangoWalkRight0: { rect: {/*tango-walk0*/x:629,y:1,w:71,h:150} },
+		tangoWalkRight1: { rect: {/*tango-walk1*/x:568,y:1077,w:79,h:145} },
+		tangoWalkRight2: { rect: {/*tango-walk2*/x:711,y:1109,w:45,h:155} },
+		tangoWalkRight3: { rect: {/*tango-walk3*/x:649,y:1428,w:46,h:159} },
+		tangoWalkRight4: { rect: {/*tango-walk4*/x:568,y:1377,w:71,h:150} },
+		tangoWalkRight5: { rect: {/*tango-walk5*/x:568,y:930,w:79,h:145} },
+		tangoWalkRight6: { rect: {/*tango-walk6*/x:711,y:952,w:45,h:155} },
+		tangoWalkRight7: { rect: {/*tango-walk7*/x:649,y:1267,w:46,h:159} },
+		tangoWalkLeft0: { rect: {/*tango-walk0*/x:629,y:1,w:71,h:150},
 			mirror: true },
-		tangoWalkLeft1: { rect: {/*tango-walk1*/x:892,y:468,w:79,h:145},
+		tangoWalkLeft1: { rect: {/*tango-walk1*/x:568,y:1077,w:79,h:145},
 			mirror: true },
-		tangoWalkLeft2: { rect: {/*tango-walk2*/x:708,y:619,w:45,h:155},
+		tangoWalkLeft2: { rect: {/*tango-walk2*/x:711,y:1109,w:45,h:155},
 			mirror: true },
-		tangoWalkLeft3: { rect: {/*tango-walk3*/x:145,y:565,w:46,h:159},
+		tangoWalkLeft3: { rect: {/*tango-walk3*/x:649,y:1428,w:46,h:159},
 			mirror: true },
-		tangoWalkLeft4: { rect: {/*tango-walk4*/x:1085,y:1,w:71,h:150},
+		tangoWalkLeft4: { rect: {/*tango-walk4*/x:568,y:1377,w:71,h:150},
 			mirror: true },
-		tangoWalkLeft5: { rect: {/*tango-walk5*/x:811,y:468,w:79,h:145},
+		tangoWalkLeft5: { rect: {/*tango-walk5*/x:568,y:930,w:79,h:145},
 			mirror: true },
-		tangoWalkLeft6: { rect: {/*tango-walk6*/x:661,y:619,w:45,h:155},
+		tangoWalkLeft6: { rect: {/*tango-walk6*/x:711,y:952,w:45,h:155},
 			mirror: true },
-		tangoWalkLeft7: { rect: {/*tango-walk7*/x:97,y:565,w:46,h:159},
+		tangoWalkLeft7: { rect: {/*tango-walk7*/x:649,y:1267,w:46,h:159},
 			mirror: true },
-		tigerJumpRight0: { rect: {/*tiger-jump0*/x:241,y:1,w:186,h:76} },
-		tigerJumpRight1: { rect: {/*tiger-jump1*/x:1,y:307,w:189,h:104} },
-		tigerJumpRight2: { rect: {/*tiger-jump2*/x:200,y:154,w:209,h:76} },
-		tigerJumpRight3: { rect: {/*tiger-jump3*/x:200,y:321,w:191,h:73} },
-		tigerJumpLeft0: { rect: {/*tiger-jump0*/x:241,y:1,w:186,h:76},
+		tileFloor: {
+			rect: {/*tile-floor*/x:1,y:1441,w:160,h:160} },
+		tileInnerTopLeft: {
+			rect: {/*tile-inner-top-left*/x:1,y:955,w:160,h:160},
+			blocks: true },
+		tileInnerTop: {
+			rect: {/*tile-inner-top*/x:1,y:793,w:160,h:160},
+			blocks: true },
+		tileInnerTopRight: {
+			rect: {/*tile-inner-top-right*/x:200,y:802,w:160,h:160},
+			blocks: true },
+		tileInnerLeft: {
+			rect: {/*tile-inner-left*/x:1,y:1117,w:160,h:160},
+			blocks: true },
+		tileInner: {
+			rect: {/*tile-inner*/x:200,y:640,w:160,h:160},
+			blocks: true },
+		tileInnerRight: {
+			rect: {/*tile-inner-right*/x:200,y:964,w:160,h:160},
+			blocks: true },
+		tileInnerBottomLeft: {
+			rect: {/*tile-inner-bottom-left*/x:200,y:1288,w:160,h:160},
+			blocks: true },
+		tileInnerBottom: {
+			rect: {/*tile-inner-bottom*/x:200,y:1126,w:160,h:160},
+			blocks: true },
+		tileInnerBottomRight: {
+			rect: {/*tile-inner-bottom-right*/x:1,y:1279,w:160,h:160},
+			blocks: true },
+		tileOuterTopLeft: {
+			rect: {/*tile-outer-top-left*/x:1,y:307,w:160,h:160},
+			blocks: true },
+		tileOuterLeft: {
+			rect: {/*tile-outer-left*/x:1,y:469,w:160,h:160} },
+		tileOuterTopRight: {
+			rect: {/*tile-outer-top-right*/x:200,y:154,w:160,h:160},
+			blocks: true },
+		tileOuterBottomLeft: {
+			rect: {/*tile-outer-bottom-left*/x:1,y:631,w:160,h:160},
+			blocks: true },
+		tileOuterRight: {
+			rect: {/*tile-outer-right*/x:200,y:316,w:160,h:160} },
+		tileOuterBottomRight: {
+			rect: {/*tile-outer-bottom-right*/x:200,y:478,w:160,h:160},
+			blocks: true },
+		tigerJumpRight0: { rect: {/*tiger-jump0*/x:362,y:405,w:186,h:76} },
+		tigerJumpRight1: { rect: {/*tiger-jump1*/x:241,y:1,w:189,h:104} },
+		tigerJumpRight2: { rect: {/*tiger-jump2*/x:362,y:154,w:209,h:76} },
+		tigerJumpRight3: { rect: {/*tiger-jump3*/x:362,y:232,w:191,h:73} },
+		tigerJumpLeft0: { rect: {/*tiger-jump0*/x:362,y:405,w:186,h:76},
 			mirror: true },
-		tigerJumpLeft1: { rect: {/*tiger-jump1*/x:1,y:307,w:189,h:104},
+		tigerJumpLeft1: { rect: {/*tiger-jump1*/x:241,y:1,w:189,h:104},
 			mirror: true },
-		tigerJumpLeft2: { rect: {/*tiger-jump2*/x:200,y:154,w:209,h:76},
+		tigerJumpLeft2: { rect: {/*tiger-jump2*/x:362,y:154,w:209,h:76},
 			mirror: true },
-		tigerJumpLeft3: { rect: {/*tiger-jump3*/x:200,y:321,w:191,h:73},
+		tigerJumpLeft3: { rect: {/*tiger-jump3*/x:362,y:232,w:191,h:73},
 			mirror: true },
-		tigerRightLookLeft: { rect: {/*tiger-look*/x:389,y:232,w:154,h:87} },
-		tigerLeftLookRight: { rect: {/*tiger-look*/x:389,y:232,w:154,h:87},
+		tigerRightLookLeft: { rect: {/*tiger-look*/x:200,y:1450,w:154,h:87} },
+		tigerLeftLookRight: { rect: {/*tiger-look*/x:200,y:1450,w:154,h:87},
 			mirror: true },
-		tigerRight: { rect: {/*tiger*/x:200,y:232,w:187,h:87} },
-		tigerLeft: { rect: {/*tiger*/x:200,y:232,w:187,h:87},
+		tigerRight: { rect: {/*tiger*/x:362,y:316,w:187,h:87} },
+		tigerLeft: { rect: {/*tiger*/x:362,y:316,w:187,h:87},
 			mirror: true },
 	},
 	mapSymbols = {
-		" ":"carpet",
-		"w":"wall",
+		" ":"tileFloor",
+		"1":"tileInnerTopLeft",
+		"2":"tileInnerTop",
+		"3":"tileInnerTopRight",
+		"4":"tileInnerLeft",
+		"5":"tileInner",
+		"6":"tileInnerRight",
+		"7":"tileInnerBottomLeft",
+		"8":"tileInnerBottom",
+		"9":"tileInnerBottomRight",
+		"l":"tileOuterTopLeft",
+		"r":"tileOuterTopRight",
+		"[":"tileOuterLeft",
+		"L":"tileOuterBottomLeft",
+		"R":"tileOuterBottomRight",
+		"]":"tileOuterRight",
 	},
 	level = 0,
 	levels = [
@@ -201,22 +260,22 @@ var requestAnimFrame =
 
 			addPlayer( 5.5, 5.5 );
 
-			addTango( 8, 8 );
-			addTango( 4, 2 );
+			addTango( 8, 2, -.03, .03 );
+			addTango( 10, 8, .03, 0 );
 
 			loadMap( 12, 12,
-				"            "+
-				"        w   "+
-				"        w   "+
-				"        w   "+
-				"        w   "+
-				"            "+
-				"            "+
-				"            "+
-				"            "+
-				"            "+
-				"            "+
-				"            " );
+				"l888888888r5"+
+				"[         ]5"+
+				"[ 123     ]5"+
+				"[ 456     15"+
+				"[ 789     7r"+
+				"[          ]"+
+				"[       13 ]"+
+				"[ 1223  46 ]"+
+				"[ 4556  46 ]"+
+				"[ 7889  79 ]"+
+				"[          ]"+
+				"L2222222222R" );
 		}
 	],
 	atlas,
@@ -239,8 +298,8 @@ var requestAnimFrame =
 	mapHeight,
 	mapLeft,
 	mapTop,
-	playerWidthInCell,
-	playerHeightInCell,
+	entityWidthInCell,
+	entityHeightInCell,
 	sprites = {},
 	entities = [],
 	entitiesLength = 0,
@@ -265,16 +324,19 @@ function drawSprite( sprite, x, y )
 
 function drawEntity( e )
 {
+	if( e.move )
+		e.move();
+
 	var name = e.name,
-		x = e.x,
-		y = e.y,
 		vx = e.vx,
 		vy = e.vy,
 		sprite;
 
 	if( vx || vy )
 	{
-		var direction,
+		var direction = vx < 0 || (vx == 0 && vy < 0) ?
+				"Left" :
+				"Right",
 			action;
 
 		if( e.isTiger )
@@ -287,11 +349,6 @@ function drawEntity( e )
 			action = tigerLoose ? "Run" : "Walk";
 			frames = 8;
 		}
-
-		if( vx < 0 )
-			direction = "Left";
-		else
-			direction = "Right";
 
 		var frame = e.frame;
 
@@ -310,8 +367,8 @@ function drawEntity( e )
 
 	drawSprite(
 		sprites[sprite],
-		mapLeft+x,
-		mapTop+y );
+		mapLeft+e.x,
+		mapTop+e.y );
 }
 
 function compareY( a, b )
@@ -333,11 +390,67 @@ function drawEntities()
 		drawEntity( entities[n] );
 }
 
+function drawMap()
+{
+	var left = mapLeft,
+		top = mapTop,
+		startCol = 0,
+		skip = 0,
+		y = top | 0,
+		row = 0,
+		idx = 0,
+		cols = mapCols,
+		rows = mapRows,
+		right = left+mapWidth,
+		bottom = top+mapHeight;
+
+	if( bottom > height )
+		rows -= (bottom-height)/cellSize | 0;
+
+	if( mapTop < 0 )
+	{
+		var invisble = top/-cellSize | 0;
+
+		idx += invisble*mapCols;
+		y += invisble*cellSize;
+		row += invisble;
+	}
+
+	if( right > width )
+	{
+		var invisible = (right-width)/cellSize | 0;
+
+		cols -= invisible;
+		skip += invisible;
+	}
+
+	if( left < 0 )
+	{
+		var invisble = left/-cellSize | 0;
+
+		skip += invisble;
+		idx += invisble;
+		startCol = invisble;
+		left += invisble*cellSize;
+	}
+
+	for( ;
+		row < rows;
+		++row, y += cellSize, idx += skip )
+		for( var x = left | 0, col = startCol;
+			col < cols;
+			++col, x += cellSize, ++idx )
+			ctx.drawImage( map[idx], x | 0, y | 0 );
+}
+
 function draw()
 {
-	ctx.fillStyle = "#f2f2f2";
+	ctx.fillStyle = "#4d4d4d";
 	ctx.fillRect( 0, 0, width, height );
 
+	alignMap();
+
+	drawMap();
 	drawEntities();
 }
 
@@ -367,65 +480,34 @@ function alignMap()
 	}
 }
 
-function cell( col, row )
+function canEnter( col, row )
 {
-	var idx = (row | 0)*mapCols+(col | 0);
+	if( col < 0||
+		col >= mapCols ||
+		row < 0 ||
+		row >= mapRows )
+		return false;
 
-	if( idx < mapCells )
-	{
-		var field = map[idx];
+	var idx = (row | 0)*mapCols+(col | 0),
+		cell = map[idx % mapCells];
 
-		/*if( !field ||
-			!field.sprite )
-			return false;
-
-		//return !field.sprite.blocks;*/
-		return true;
-	}
-
-	return false;
+	return !cell.blocks;
 }
 
 function canMoveTo( col, row )
 {
-	var left = col-playerWidthInCell,
-		top = row-playerHeightInCell,
-		right = col+playerWidthInCell,
-		bottom = row+playerHeightInCell;
+	var left = col-entityWidthInCell,
+		right = col+entityWidthInCell,
+		bottom = row+entityHeightInCell;
 
-	return cell( left, top ) &&
-		cell( right, top ) &&
-		cell( left, bottom ) &&
-		cell( right, bottom );
-}
-
-function moveToBorder( col, row )
-{
-	if( col < 0 )
-		player.col = (player.col | 0)+playerWidthInCell+.01;
-	else if( col > 0 )
-		player.col = (player.col | 0)+(.99-playerWidthInCell);
-
-	if( row < 0 )
-		player.row = (player.row | 0)+playerHeightInCell+.01;
-	else if( row > 0 )
-		player.row = (player.row | 0)+(.99-playerHeightInCell);
+	return canEnter( left, bottom ) &&
+		canEnter( right, bottom );
 }
 
 function moveTo( col, row )
 {
-	if( col < playerWidthInCell )
-		col = playerWidthInCell;
-	else if( col > mapCols-playerWidthInCell )
-		col = mapCols-playerWidthInCell;
-
-	if( row < playerHeightInCell )
-		row = playerHeightInCell;
-	else if( row > mapRows-playerHeightInCell )
-		row = mapRows-playerHeightInCell;
-
-	var pc = player.col,
-		pr = player.row,
+	var pc = player.x/cellSize,
+		pr = player.y/cellSize,
 		dx = col-pc,
 		dy = row-pr,
 		max = tigerLoose ? .06 : .03;
@@ -456,11 +538,6 @@ function moveTo( col, row )
 	}
 	else
 		dx = dy = 0;
-
-	moveToBorder( dx, dy );
-
-	player.col = pc;
-	player.row = pr;
 
 	player.vx = dx;
 	player.vy = dy;
@@ -495,7 +572,9 @@ function input()
 			dy = 1;
 
 		if( dx || dy )
-			moveTo( player.col+dx, player.row+dy );
+			moveTo(
+				player.x/cellSize+dx,
+				player.y/cellSize+dy );
 	}
 }
 
@@ -508,7 +587,6 @@ function run()
 	last = now;
 
 	input();
-	alignMap();
 	draw();
 }
 
@@ -608,26 +686,63 @@ function addPlayer( col, row )
 {
 	player = {
 		name: "doq",
-		col: col,
-		row: row };
+		x: col*cellSize,
+		y: row*cellSize };
 
 	entities.push( player );
 }
 
-function addTango( col, row )
+function tangoMove()
+{
+	var col = this.x/cellSize,
+		row = this.y/cellSize,
+		dx = this.vx*factor,
+		dy = this.vy*factor,
+		tc = col+dx/cellSize,
+		tr = row+dy/cellSize;
+
+	if( !canEnter( tc, tr ) )
+	{
+		if( canEnter( tc, row ) )
+		{
+			this.vy = -this.vy;
+			dy = -dy;
+		}
+		else if( canEnter( col, tr ) )
+		{
+			this.vx = -this.vx;
+			dx = -dx;
+		}
+	}
+
+	this.x += dx;
+	this.y += dy;
+}
+
+function addTango( col, row, vx, vy )
 {
 	entities.push( {
 		name: "tango",
-		col: col,
-		row: row } );
+		x: col*cellSize,
+		y: row*cellSize,
+		vx: vx*cellSize,
+		vy: vy*cellSize,
+		move: tangoMove } );
 }
 
-function addTiger( col, row )
+function tigerMove()
+{
+}
+
+function addTiger( col, row, vx, vy )
 {
 	entities.push( {
 		name: "tiger",
-		col: col,
-		row: row } );
+		x: col*cellSize,
+		y: row*cellSize,
+		vx: vx*cellSize,
+		vy: vy*cellSize,
+		move: tigerMove } );
 
 	tigerLoose = true;
 }
@@ -640,10 +755,11 @@ function initEntities()
 	{
 		var e = entities[n];
 
-		e.x = e.col*cellSize;
-		e.y = e.row*cellSize;
+		e.x = e.x || 0;
+		e.y = e.y || 0;
+		e.vx = e.vx || 0;
+		e.vy = e.vy || 0;
 
-		e.vx = e.vy = 0;
 		e.frame =
 		e.last = 0;
 	}
@@ -664,8 +780,8 @@ function loadMap( cols, rows, template )
 		playerHeight = sprite.height >> 1,
 		normalizedCellSize = 1/cellSize;
 
-	playerWidthInCell = normalizedCellSize*playerWidth;
-	playerHeightInCell = normalizedCellSize*playerHeight;
+	entityWidthInCell = normalizedCellSize*playerWidth;
+	entityHeightInCell = normalizedCellSize*playerHeight;
 
 	mapWidth = mapCols*cellSize;
 	mapHeight = mapRows*cellSize;
@@ -677,7 +793,7 @@ function loadMap( cols, rows, template )
 		var symbol = template.charAt( n ),
 			sprite = sprites[mapSymbols[symbol]];
 
-		map[n] = { sprite: sprite };
+		map[n] = sprite;
 	}
 }
 
@@ -690,6 +806,7 @@ function scaleSprite( res, rect, w, h )
 
 	c.width = w;
 	c.height = h;
+	c.blocks = res.blocks || false;
 
 	c.centerX = w >> 1;
 	c.centerY = h >> 1;
@@ -750,10 +867,10 @@ function resize()
 	canvas.style.height = h+"px";
 
 	cellSize = Math.min(
-		resources.doqNeutral.rect.h,
+		resources.tileFloor.rect.h,
 		Math.min( width, height )/6 | 0 );
 
-	scaleFactor = cellSize/resources.doqNeutral.rect.h;
+	scaleFactor = cellSize/resources.tileFloor.rect.h;
 
 	scale();
 	levels[level]();
