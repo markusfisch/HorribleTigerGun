@@ -227,8 +227,8 @@ var requestAnimFrame =
 			mirror: true },
 		tigerJumpLeft3: { rect: {/*tiger-jump3*/x:362,y:232,w:191,h:73},
 			mirror: true },
-		tigerRightLookLeft: { rect: {/*tiger-look*/x:200,y:1450,w:154,h:87} },
-		tigerLeftLookRight: { rect: {/*tiger-look*/x:200,y:1450,w:154,h:87},
+		tigerRightLook: { rect: {/*tiger-look*/x:200,y:1450,w:154,h:87} },
+		tigerLeftLook: { rect: {/*tiger-look*/x:200,y:1450,w:154,h:87},
 			mirror: true },
 		tigerRight: { rect: {/*tiger*/x:362,y:316,w:187,h:87} },
 		tigerLeft: { rect: {/*tiger*/x:362,y:316,w:187,h:87},
@@ -260,8 +260,9 @@ var requestAnimFrame =
 
 			addPlayer( 5.5, 5.5 );
 
-			addTango( 8, 2, -.03, .03 );
-			addTango( 11, 8, .03, 0 );
+			addTango( 4, 1, .015, -.01 );
+			addTango( 8, 2, -.015, .015 );
+			addTango( 11, 8, .015, 0 );
 
 			loadMap( 12, 12,
 				"l888888888r5"+
@@ -276,6 +277,29 @@ var requestAnimFrame =
 				"[ 7889  79 ]"+
 				"[          ]"+
 				"L2222222222R" );
+		},
+		function()
+		{
+			reset();
+
+			addPlayer( 4.5, 1.5 );
+
+			addTango( 2, 4, .025, .015 );
+			addTango( 8, 4, -.025, .025 );
+			addTango( 2.5, 8, .01, -.025 );
+			addTango( 8.5, 8, -.01, -.025 );
+
+			loadMap( 10, 10,
+				"l88888888r"+
+				"[        ]"+
+				"[  1223  ]"+
+				"[  4556  ]"+
+				"[  7889  ]"+
+				"[        ]"+
+				"[  1223  ]"+
+				"[  7889  ]"+
+				"[        ]"+
+				"L22222222R" );
 		}
 	],
 	atlas,
@@ -314,7 +338,12 @@ var requestAnimFrame =
 	keysDown = [],
 	tigerGunFiredAt = 0,
 	tigerGunFiring = false,
-	tigerLoose = false;
+	tigerLoose = false,
+	tangoFollowRadius,
+	tangoAttackRadius,
+	tigerFollowRadius,
+	tigerAttackRadius,
+	beltToFloor;
 
 function drawSprite( sprite, x, y )
 {
@@ -326,7 +355,16 @@ function drawSprite( sprite, x, y )
 
 function drawEntity( e )
 {
-	if( e.move )
+	var alive = e.alive,
+		shooting = e.shooting,
+		hit = e.hit,
+		eaten = e.eaten,
+		dx = 0,
+		dy = 0;
+
+	if( alive &&
+		!shooting &&
+		e.move )
 		e.move();
 
 	var name = e.name,
@@ -347,13 +385,9 @@ function drawEntity( e )
 
 			if( frame > 2 )
 			{
-				addTiger(
-					e.x,
-					e.y,
-					e.lastVx < 0 ? -.06 : .06,
-					0 );
-
+				addTiger( e.x, e.y, .05, .01 );
 				entitiesLength = entities.length;
+
 				tigerGunFiring = false;
 				frame = 2;
 			}
@@ -364,12 +398,76 @@ function drawEntity( e )
 			(player.lastVx < 0 ? "Left" : "Right")+
 			frame;
 	}
+	else if( hit )
+	{
+		var frame = e.frame;
+
+		if( now-e.last > 250 )
+		{
+			e.frame = ++frame;
+			e.last = now;
+
+			if( frame > 1 )
+				e.hit = false;
+		}
+
+		sprite =
+			name+
+			"Hit"+
+			Math.min( frame, 1 );
+	}
+	else if( eaten )
+	{
+		if( now-e.last > 1000 )
+			e.eaten = false;
+
+		sprite = name+"Dead";
+		dx = Math.random()*scaleFactor*4;
+		dy = beltToFloor;
+	}
+	else if( !alive )
+	{
+		sprite = name+"Dead";
+		dy = beltToFloor;
+	}
+	else if( shooting )
+	{
+		var frame = e.frame;
+
+		if( frame < 3 &&
+			now-e.last > animationFrequency )
+		{
+			e.frame = ++frame;
+			e.last = now;
+
+			if( frame > 2 )
+			{
+				frame = 2;
+				e.shooting = false;
+
+				if( !tigerLoose )
+				{
+					e.vx = 0;
+					e.vy = 0;
+				}
+
+				player.frame = 0;
+				player.last = now;
+				player.hit = true;
+				player.alive = false;
+			}
+		}
+
+		sprite =
+			name+
+			"Shoot"+
+			(player.lastVx < 0 ? "Left" : "Right")+
+			frame;
+	}
 	else if( vx || vy )
 	{
-		var direction = vx < 0 || (vx == 0 && vy < 0) ?
-				"Left" :
-				"Right",
-			action;
+		var action,
+			frames;
 
 		if( e.isTiger )
 		{
@@ -391,21 +489,39 @@ function drawEntity( e )
 		}
 
 		e.lastVx = vx;
+		e.lastVy = vy;
 
-		sprite = name+action+direction+(frame % frames);
+		sprite =
+			name+
+			action+
+			(vx < 0 || (vx == 0 && vy < 0) ?
+				"Left" :
+				"Right")+
+			(frame % frames);
 	}
 	else if( e.isTiger )
-		sprite = name+"Left";
+	{
+		sprite = name+
+			(e.lastVx < 0 ? "Left" : "Right")+
+			(now % 3000 < 1500 ? "Look" : "");
+
+		if( now-e.last > 4000 )
+		{
+			e.vx = -e.lastVx;
+			e.vy = -e.lastVy;
+		}
+	}
 	else if( e === player &&
-		now-tigerGunFiredAt < 2000 )
+		(now-tigerGunFiredAt < 2000 ||
+			(tigerLoose && now % 1000 < 160)) )
 		sprite = name+"Stunned";
 	else
 		sprite = name+"Neutral";
 
 	drawSprite(
 		sprites[sprite],
-		mapLeft+e.x,
-		mapTop+e.y );
+		mapLeft+e.x+dx,
+		mapTop+e.y+dy );
 }
 
 function compareY( a, b )
@@ -421,10 +537,29 @@ function compareY( a, b )
 
 function drawEntities()
 {
+	var tangoAlive = false;
+
 	entities.sort( compareY );
 
 	for( var n = 0; n < entitiesLength; ++n )
-		drawEntity( entities[n] );
+	{
+		var e = entities[n];
+
+		drawEntity( e );
+
+		if( !tangoAlive &&
+			e !== player &&
+			!e.isTiger &&
+			e.alive )
+			tangoAlive = true;
+	}
+
+	if( !tangoAlive &&
+		player.alive )
+	{
+		player.alive = false;
+		levels[++level % levels.length]();
+	}
 }
 
 function drawMap()
@@ -517,6 +652,15 @@ function alignMap()
 	}
 }
 
+function fireTigerGun()
+{
+	tigerGunFiring = true;
+	tigerGunFiredAt = now;
+
+	player.frame = 0;
+	player.last = now;
+}
+
 function canEnter( col, row )
 {
 	if( col < 0||
@@ -585,6 +729,18 @@ function moveTo( col, row )
 
 function input()
 {
+	if( !player.alive )
+	{
+		if( keysDown[13] )
+		{
+			levels[level]();
+			pointerLength = 0;
+			keysDown[13] = false;
+		}
+
+		return;
+	}
+
 	if( tigerGunFiring )
 		return;
 
@@ -618,13 +774,7 @@ function input()
 	}
 
 	if( keysDown[32] )
-	{
-		tigerGunFiring = true;
-		tigerGunFiredAt = now;
-
-		player.frame = 0;
-		player.last = now;
-	}
+		fireTigerGun();
 }
 
 function run()
@@ -729,6 +879,9 @@ function keyDown( ev )
 function reset()
 {
 	entitiesLength = entities.length = 0;
+	tigerGunFiredAt = 0;
+	tigerGunFiring = false;
+	tigerLoose = false;
 }
 
 function addPlayer( col, row )
@@ -741,43 +894,82 @@ function addPlayer( col, row )
 	entities.push( player );
 }
 
-function tangoMove()
+function moveEntity( e )
 {
-	var col = this.x/cellSize,
-		row = this.y/cellSize,
-		dx = this.vx*factor,
-		dy = this.vy*factor;
+	var col = e.x/cellSize,
+		row = e.y/cellSize,
+		f = Math.min( 2, factor ),
+		vx = e.vx,
+		vy = e.vy;
 
-	if( tigerLoose )
-	{
-		dx *= 2;
-		dy *= 2;
-	}
+	if( vx == 0 &&
+		vy == 0 )
+		return;
 
-	var tc = col+dx/cellSize,
+	var dx = vx*f,
+		dy = vy*f,
+		tc = col+dx/cellSize,
 		tr = row+dy/cellSize;
 
 	if( !canMoveTo( tc, tr ) )
 	{
 		if( canMoveTo( tc, row ) )
 		{
-			this.vy = -this.vy;
+			e.vy = -e.vy;
 			dy = -dy;
 		}
 		else if( canMoveTo( col, tr ) )
 		{
-			this.vx = -this.vx;
+			e.vx = -e.vx;
 			dx = -dx;
 		}
 		else
 		{
-			this.vx = this.vy = 0;
+			/*e.x = (col | 0)+.5;
+			e.y = (row | 0)+.5;*/
+
 			dx = dy = 0;
 		}
 	}
 
-	this.x += dx;
-	this.y += dy;
+	e.x += dx;
+	e.y += dy;
+}
+
+function headTo( e, dx, dy, d )
+{
+	var vx = e.vx,
+		vy = e.vy,
+		l = Math.sqrt( vx*vx + vy*vy );
+
+	e.vx = dx/d*l;
+	e.vy = dy/d*l;
+}
+
+function tangoMove()
+{
+	if( player.alive )
+	{
+		var dx = player.x-this.x,
+			dy = player.y-this.y;
+
+		if( Math.abs( dx ) < tangoFollowRadius ||
+			Math.abs( dy ) < tangoFollowRadius )
+		{
+			var d = Math.sqrt( dx*dx + dy*dy );
+
+			if( d < tangoAttackRadius )
+			{
+				this.shooting = true;
+				this.frame = 0;
+				this.last = now;
+			}
+			else if( d < tangoFollowRadius )
+				headTo( this, dx, dy, d );
+		}
+	}
+
+	moveEntity( this );
 }
 
 function addTango( col, row, vx, vy )
@@ -791,20 +983,148 @@ function addTango( col, row, vx, vy )
 		move: tangoMove } );
 }
 
+function tigerMove()
+{
+	var min = 0xffff,
+		closest = null,
+		tx = this.x,
+		ty = this.y,
+		dx,
+		dy;
+
+	for( var n = 0; n < entitiesLength; ++n )
+	{
+		var e = entities[n];
+
+		if( e.isTiger ||
+			!e.alive )
+			continue;
+
+		var edx = e.x-tx,
+			edy = e.y-ty,
+			adx = Math.abs( edx ),
+			ady = Math.abs( edy );
+
+		if( adx < min ||
+			ady < min )
+		{
+			min = Math.min( adx, ady );
+			dx = edx;
+			dy = edy;
+			closest = e;
+		}
+	}
+
+	if( closest &&
+		min < tigerFollowRadius )
+	{
+		var d = Math.sqrt( dx*dx + dy*dy );
+
+		if( d < tigerAttackRadius )
+		{
+			closest.eaten = true;
+			closest.alive = false;
+			this.vx = this.vy = 0;
+		}
+		else if( d < tigerFollowRadius )
+			headTo( this, dx, dy, d );
+	}
+
+	moveEntity( this );
+}
+
+function tangosRun()
+{
+	for( var n = entitiesLength; n--; )
+	{
+		var e = entities[n];
+
+		if( e.isTiger ||
+			e === player )
+			continue;
+
+		e.vx *= 2;
+		e.vy *= 2;
+	}
+}
+
 function addTiger( x, y, vx, vy )
 {
+	var left = player.lastVx < 0,
+		up = player.lastVy < 0,
+		col = x/cellSize,
+		row = y/cellSize,
+		dropX = 0,
+		dropY = 0;
+
+	if( left )
+	{
+		if( canMoveTo( col-1, row ) )
+		{
+			dropX = -cellSize;
+			left = true;
+		}
+		else if( canMoveTo( col+1, row ) )
+		{
+			dropX = cellSize;
+			left = false;
+		}
+		else if( canMoveTo( col, row-1 ) )
+		{
+			dropY = -cellSize;
+			up = true;
+		}
+		else if( canMoveTo( col, row+1 ) )
+		{
+			dropY = cellSize;
+			up = false;
+		}
+	}
+	else
+	{
+		if( canMoveTo( col+1, row ) )
+		{
+			dropX = cellSize;
+			left = false;
+		}
+		else if( canMoveTo( col-1, row ) )
+		{
+			dropX = -cellSize;
+			left = true;
+		}
+		else if( canMoveTo( col, row+1 ) )
+		{
+			dropY = cellSize;
+			up = false;
+		}
+		else if( canMoveTo( col, row-1 ) )
+		{
+			dropY = -cellSize;
+			up = true;
+		}
+	}
+
 	entities.push( {
 		name: "tiger",
+		alive: true,
+		shooting: false,
+		hit: false,
 		isTiger: true,
-		x: x,
-		y: y,
-		vx: vx*cellSize,
-		vy: vy*cellSize,
-		move: tangoMove,
+		x: x+dropX,
+		y: y+dropY,
+		vx: (left ? -vx : vx)*cellSize,
+		vy: (up ? -vy : vy)*cellSize,
+		lastVx: 0,
+		lastVy: 0,
+		move: tigerMove,
 		frame: 0,
 		last: 0 } );
 
-	tigerLoose = true;
+	if( !tigerLoose )
+	{
+		tangosRun();
+		tigerLoose = true;
+	}
 }
 
 function initEntities()
@@ -815,10 +1135,18 @@ function initEntities()
 	{
 		var e = entities[n];
 
+		e.alive = true;
+		e.shooting = false;
+		e.hit = false;
+		e.isTiger = false;
+
 		e.x = e.x || 0;
 		e.y = e.y || 0;
 		e.vx = e.vx || 0;
 		e.vy = e.vy || 0;
+
+		e.lastVx = 0;
+		e.lastVy = 0;
 
 		e.frame =
 		e.last = 0;
@@ -931,6 +1259,11 @@ function resize()
 		Math.min( width, height )/6 | 0 );
 
 	scaleFactor = cellSize/resources.tileFloor.rect.h;
+	tangoFollowRadius = cellSize*1.5;
+	tangoAttackRadius = cellSize*.3;
+	tigerFollowRadius = tangoFollowRadius;
+	tigerAttackRadius = tangoAttackRadius;
+	beltToFloor = cellSize*.4;
 
 	scale();
 	levels[level]();
