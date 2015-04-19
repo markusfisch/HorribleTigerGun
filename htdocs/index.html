@@ -261,7 +261,7 @@ var requestAnimFrame =
 			addPlayer( 5.5, 5.5 );
 
 			addTango( 8, 2, -.03, .03 );
-			addTango( 10, 8, .03, 0 );
+			addTango( 11, 8, .03, 0 );
 
 			loadMap( 12, 12,
 				"l888888888r5"+
@@ -312,6 +312,8 @@ var requestAnimFrame =
 	pointerX = [],
 	pointerY = [],
 	keysDown = [],
+	tigerGunFiredAt = 0,
+	tigerGunFiring = false,
 	tigerLoose = false;
 
 function drawSprite( sprite, x, y )
@@ -332,7 +334,37 @@ function drawEntity( e )
 		vy = e.vy,
 		sprite;
 
-	if( vx || vy )
+	if( e === player &&
+		tigerGunFiring )
+	{
+		var frame = e.frame;
+
+		if( frame < 3 &&
+			now-e.last > 160 )
+		{
+			e.frame = ++frame;
+			e.last = now;
+
+			if( frame > 2 )
+			{
+				addTiger(
+					e.x,
+					e.y,
+					e.lastVx < 0 ? -.06 : .06,
+					0 );
+
+				entitiesLength = entities.length;
+				tigerGunFiring = false;
+				frame = 2;
+			}
+		}
+
+		sprite =
+			"doqTigergunFire"+
+			(player.lastVx < 0 ? "Left" : "Right")+
+			frame;
+	}
+	else if( vx || vy )
 	{
 		var direction = vx < 0 || (vx == 0 && vy < 0) ?
 				"Left" :
@@ -358,10 +390,15 @@ function drawEntity( e )
 			e.last = now;
 		}
 
+		e.lastVx = vx;
+
 		sprite = name+action+direction+(frame % frames);
 	}
 	else if( e.isTiger )
 		sprite = name+"Left";
+	else if( e === player &&
+		now-tigerGunFiredAt < 2000 )
+		sprite = name+"Stunned";
 	else
 		sprite = name+"Neutral";
 
@@ -548,7 +585,8 @@ function moveTo( col, row )
 
 function input()
 {
-	player.vx = player.vy = 0;
+	if( tigerGunFiring )
+		return;
 
 	if( pointerLength )
 	{
@@ -575,6 +613,17 @@ function input()
 			moveTo(
 				player.x/cellSize+dx,
 				player.y/cellSize+dy );
+		else
+			player.vx = player.vy = 0;
+	}
+
+	if( keysDown[32] )
+	{
+		tigerGunFiring = true;
+		tigerGunFiredAt = now;
+
+		player.frame = 0;
+		player.last = now;
 	}
 }
 
@@ -697,21 +746,33 @@ function tangoMove()
 	var col = this.x/cellSize,
 		row = this.y/cellSize,
 		dx = this.vx*factor,
-		dy = this.vy*factor,
-		tc = col+dx/cellSize,
+		dy = this.vy*factor;
+
+	if( tigerLoose )
+	{
+		dx *= 2;
+		dy *= 2;
+	}
+
+	var tc = col+dx/cellSize,
 		tr = row+dy/cellSize;
 
-	if( !canEnter( tc, tr ) )
+	if( !canMoveTo( tc, tr ) )
 	{
-		if( canEnter( tc, row ) )
+		if( canMoveTo( tc, row ) )
 		{
 			this.vy = -this.vy;
 			dy = -dy;
 		}
-		else if( canEnter( col, tr ) )
+		else if( canMoveTo( col, tr ) )
 		{
 			this.vx = -this.vx;
 			dx = -dx;
+		}
+		else
+		{
+			this.vx = this.vy = 0;
+			dx = dy = 0;
 		}
 	}
 
@@ -730,19 +791,18 @@ function addTango( col, row, vx, vy )
 		move: tangoMove } );
 }
 
-function tigerMove()
-{
-}
-
-function addTiger( col, row, vx, vy )
+function addTiger( x, y, vx, vy )
 {
 	entities.push( {
 		name: "tiger",
-		x: col*cellSize,
-		y: row*cellSize,
+		isTiger: true,
+		x: x,
+		y: y,
 		vx: vx*cellSize,
 		vy: vy*cellSize,
-		move: tigerMove } );
+		move: tangoMove,
+		frame: 0,
+		last: 0 } );
 
 	tigerLoose = true;
 }
