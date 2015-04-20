@@ -11,7 +11,7 @@ html,
 body
 {
 	margin: 0; padding: 0;
-	background: #4d4d4d;
+	background: #001f43;
 	overflow: hidden;
 	-ms-touch-action: none;
 }
@@ -617,7 +617,7 @@ function drawMap()
 
 function draw()
 {
-	ctx.fillStyle = "#4d4d4d";
+	ctx.fillStyle = "#001f43";
 	ctx.fillRect( 0, 0, width, height );
 
 	alignMap();
@@ -924,12 +924,7 @@ function moveEntity( e )
 			dx = -dx;
 		}
 		else
-		{
-			/*e.x = (col | 0)+.5;
-			e.y = (row | 0)+.5;*/
-
 			dx = dy = 0;
-		}
 	}
 
 	e.x += dx;
