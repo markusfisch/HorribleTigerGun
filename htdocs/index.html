@@ -306,7 +306,7 @@ var requestAnimFrame =
 	canvas,
 	ctx,
 	resizeTimer,
-	resizing,
+	resizing = false,
 	width,
 	height,
 	ratio,
@@ -1268,6 +1268,9 @@ function resize()
 
 function scheduleResize()
 {
+	if( resizing )
+		return;
+
 	if( resizeTimer )
 		clearTimeout( resizeTimer );
 
